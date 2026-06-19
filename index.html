@@ -432,7 +432,31 @@
       nav{padding:10px 18px;}
       .font-cards{grid-template-columns:1fr;}
       .hero-bee-static { display:none; }
+
+      /* Hero: remove dragon (overlaps logo) and raccoon (overlapped by buttons) on mobile */
+      .hero-dragon { display:none; }
+      .hero-left   { display:none; }
+
+      /* How It Works: gift covers content on narrow screens, remove */
+      .gift-float-how.right { display:none; }
+
+      /* Choose Your Adventure: torches clip off-screen — shrink, pull inward, allow wrap if needed */
+      .torch-container { gap:0px; flex-wrap:wrap; }
+      #torch-left-canvas, #torch-right-canvas { width:48px; flex-shrink:0; }
+      #episodes .section-inner { padding-left:16px; padding-right:16px; }
+
+      /* Bottom subscribe button: keep text on one line, shrink coins so button has room */
+      #sub-coin-left, #sub-coin-right { width:60px; }
+      .sub-btn {
+        font-size:1.05rem;
+        padding:15px 20px;
+        white-space:nowrap;
+        gap:8px;
+      }
+      .sub-btn svg { width:22px; height:22px; flex-shrink:0; }
+      .sub-btn-wrap { gap:4px; }
     }
+
     @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
   </style>
 </head>
@@ -818,8 +842,9 @@ window.addEventListener('DOMContentLoaded', () => {
     if (coinFired) return;
     coinFired = true;
     coinOverlay.style.display = 'block';
-    // 20% of viewport width each — noticeably smaller
-    const W = Math.round(window.innerWidth * 0.30);
+    // Bigger percentage on small screens so it doesn't look tiny
+    const isMobile = window.innerWidth <= 700;
+    const W = Math.round(window.innerWidth * (isMobile ? 0.50 : 0.30));
     // Coin crop aspect: cropW=0.458 of 1920, cropH=0.552 of 1080
     const coinAspect = (0.552 * 1080) / (0.458 * 1920);
     const H = Math.round(W * coinAspect);
@@ -864,8 +889,9 @@ window.addEventListener('DOMContentLoaded', () => {
     if (diamondFired) return;
     diamondFired = true;
     diamondOverlay.style.display = 'block';
-    // Each canvas is 35% of viewport width — big but not overwhelming
-    const W = Math.round(window.innerWidth * 0.35);
+    // Bigger percentage on small screens so it doesn't look tiny
+    const isMobile = window.innerWidth <= 700;
+    const W = Math.round(window.innerWidth * (isMobile ? 0.55 : 0.35));
     const diamondAspect = (DIAMOND_CH * 1080) / (DIAMOND_CW * 1920);
     const H = Math.round(W * diamondAspect);
     dLeft.width=W;  dLeft.height=H;
